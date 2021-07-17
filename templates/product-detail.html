@@ -1,0 +1,12 @@
+{% extends "layouts/default.html" %}
+{% block title %}{{product.name}} - The Computer Store{% endblock %}
+{% block content %}
+<div id="main">
+  <h1>Product Details</h1>
+  <p>Code: {{product.code}}</p>
+  <p>Name: {{product.name}}</p>
+  <p>Price: ${{product.price}}</p>
+  <p>Manufacturer: <a href="/manufacturers/{{product.manufacturer}}">{{product.manufacturer}}</a></p>
+
+</div>
+{% endblock %}

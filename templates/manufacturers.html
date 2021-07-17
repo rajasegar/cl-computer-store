@@ -14,7 +14,7 @@
       {% for man in manfs %}
       <tr>
 	<td>{{man.code}}</td>
-	<td>{{man.name}}</td>
+	<td><a href="/manufacturers/{{man.code}}">{{man.name}}</a></td>
       </tr>
       {% endfor %}
     </tbody>

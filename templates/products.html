@@ -15,10 +15,10 @@
     <tbody>
       {% for product in products %}
       <tr>
-	<td>{{product.code}}</td>
-	<td>{{product.name}}</td>
-	<td>{{product.price}}</td>
-	<td><a href="/manufacturers/{{product.manufacturer}}">{{product.manufacturer}}</a></td>
+	<td>{{product.p-code}}</td>
+	<td><a href="/products/{{product.p-code}}">{{product.p-name}}</a></td>
+	<td>${{product.price}}</td>
+	<td><a href="/manufacturers/{{product.manufacturer}}">{{product.man-name}}</a></td>
       </tr>
       {% endfor %}
     </tbody>

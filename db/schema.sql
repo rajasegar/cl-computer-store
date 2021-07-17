@@ -1,3 +1,8 @@
+-- How to create database
+-- $ sqlite3
+-- sqlite3> .read db/schema.sql
+-- sqlite3> .save computer-store.db
+-- sqlite3> .quit
 CREATE TABLE Manufacturers (
 	Code INTEGER PRIMARY KEY NOT NULL,
 	Name CHAR(50) NOT NULL 

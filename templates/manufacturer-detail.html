@@ -1,5 +1,5 @@
 {% extends "layouts/default.html" %}
-{% block title %}Manufacturers - The Computer Store{% endblock %}
+{% block title %}{{manufacturer.name}} - The Computer Store{% endblock %}
 {% block content %}
 <div id="main">
   <h1>Manufacturers</h1>
@@ -13,16 +13,14 @@
 	<th>Code</th>
 	<th>Name</th>
 	<th>Price</th>
-	<th>Manufacturer</th>
       </tr>
     </thead>
     <tbody>
       {% for product in products %}
       <tr>
 	<td>{{product.code}}</td>
-	<td>{{product.name}}</td>
-	<td>{{product.price}}</td>
-	<td><a href="/manufacturers/{{product.manufacturer}}">{{product.manufacturer}}</a></td>
+	<td><a href="/products/{{product.code}}">{{product.name}}</a></td>
+	<td>${{product.price}}</td>
       </tr>
       {% endfor %}
     </tbody>

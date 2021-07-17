@@ -21,51 +21,51 @@
 (clear-routing-rules *web*)
 
 ;; Create manufacturers table
-(with-connection (db)
-  (execute
-   (drop-table :manufacturers :if-exists t))
-  (execute
-   (create-table :manufacturers
-       ((code :type 'integer
-	      :primary-key t)
-	(name :type 'string)))))
+;; (with-connection (db)
+;;   (execute
+;;    (drop-table :manufacturers :if-exists t))
+;;   (execute
+;;    (create-table :manufacturers
+;;        ((code :type 'integer
+;; 	      :primary-key t)
+;; 	(name :type 'string)))))
 
 ;; Create products table
-(with-connection (db)
-  (execute
-   (drop-table :products :if-exists t))
-  (execute
-   (create-table :products
-       ((code :type 'integer
-	      :primary-key t)
-	(name :type 'string)
-	(price :type 'real)
-	(manufacturer :type 'integer)))))
+;; (with-connection (db)
+;;   (execute
+;;    (drop-table :products :if-exists t))
+;;   (execute
+;;    (create-table :products
+;;        ((code :type 'integer
+;; 	      :primary-key t)
+;; 	(name :type 'string)
+;; 	(price :type 'integer)
+;; 	(manufacturer :type 'integer)))))
 
 ;; Generate data for manufacturers
-(with-connection (db)
-  (execute (insert-into :manufacturers (set= :code 1 :name "Sony")))
-  (execute (insert-into :manufacturers (set= :code 2 :name "Creative Labs")))
-  (execute (insert-into :manufacturers (set= :code 3 :name "Hewlett-Packard")))
-  (execute (insert-into :manufacturers (set= :code 4 :name "Iomega")))
-  (execute (insert-into :manufacturers (set= :code 5 :name "Fujitsu")))
-  (execute (insert-into :manufacturers (set= :code 6 :name "Winchester")))
-  (execute (insert-into :manufacturers (set= :code 7 :name "Bose"))))
+;; (with-connection (db)
+;;   (execute (insert-into :manufacturers (set= :code 1 :name "Sony")))
+;;   (execute (insert-into :manufacturers (set= :code 2 :name "Creative Labs")))
+;;   (execute (insert-into :manufacturers (set= :code 3 :name "Hewlett-Packard")))
+;;   (execute (insert-into :manufacturers (set= :code 4 :name "Iomega")))
+;;   (execute (insert-into :manufacturers (set= :code 5 :name "Fujitsu")))
+;;   (execute (insert-into :manufacturers (set= :code 6 :name "Winchester")))
+;;   (execute (insert-into :manufacturers (set= :code 7 :name "Bose"))))
    
 ;; Generate data for products
-(with-connection (db)
-  (execute (insert-into :products (set= :code 1 :name "Hard drive" :price 240 :manufacturer 5)))
-  (execute (insert-into :products (set= :code 2 :name "Memory" :price 120 :manufacturer 6)))
-  (execute (insert-into :products (set= :code 3 :name "ZIP drive" :price 150 :manufacturer 4)))
-  (execute (insert-into :products (set= :code 4 :name "Floppy disk" :price 5 :manufacturer 6)))
-  (execute (insert-into :products (set= :code 5 :name "Monitor" :price 240 :manufacturer 1)))
-  (execute (insert-into :products (set= :code 6 :name "DVD drive" :price 180 :manufacturer 2)))
-  (execute (insert-into :products (set= :code 7 :name "CD drive" :price 90 :manufacturer 2)))
-  (execute (insert-into :products (set= :code 8 :name "Printer" :price 270 :manufacturer 3)))
-  (execute (insert-into :products (set= :code 9 :name "Toner cartridge" :price 66 :manufacturer 3)))
-  (execute (insert-into :products (set= :code 10 :name "DVD burner" :price 180 :manufacturer 2))))
+;; (with-connection (db)
+;;   (execute (insert-into :products (set= :code 1 :name "Hard drive" :price 240 :manufacturer 5)))
+;;   (execute (insert-into :products (set= :code 2 :name "Memory" :price 120 :manufacturer 6)))
+;;   (execute (insert-into :products (set= :code 3 :name "ZIP drive" :price 150 :manufacturer 4)))
+;;   (execute (insert-into :products (set= :code 4 :name "Floppy disk" :price 5 :manufacturer 6)))
+;;   (execute (insert-into :products (set= :code 5 :name "Monitor" :price 240 :manufacturer 1)))
+;;   (execute (insert-into :products (set= :code 6 :name "DVD drive" :price 180 :manufacturer 2)))
+;;   (execute (insert-into :products (set= :code 7 :name "CD drive" :price 90 :manufacturer 2)))
+;;   (execute (insert-into :products (set= :code 8 :name "Printer" :price 270 :manufacturer 3)))
+;;   (execute (insert-into :products (set= :code 9 :name "Toner cartridge" :price 66 :manufacturer 3)))
+;;   (execute (insert-into :products (set= :code 10 :name "DVD burner" :price 180 :manufacturer 2))))
 
-;;
+;; ;;
 ;; Routing rules
 
 (defroute "/" ()
@@ -99,10 +99,27 @@
 (defroute "/products" ()
     (let ((products (with-connection (db)
     (retrieve-all
-      (select :*
-        (from :products))))))
+     (select ((:as :products.code :p-code)
+	      (:as :products.name :p-name)
+	      :price
+	      :manufacturer
+	      (:as :manufacturers.name :man-name))
+        (from :products)
+       (inner-join :manufacturers :on (:= :products.manufacturer :manufacturers.code))
+       )))))
     (format t "~a~%" products)
   (render #P"products.html" (list :products products))))
+
+(defroute "/products/:id" (&key id)
+ (with-connection (db)
+    (let ((product (retrieve-one
+			 (select :*
+			   (from :products)
+			   (where (:= :code id))))))
+      (format t "~a~%" product)
+      (render #P"product-detail.html" (list :product product)))))
+
+
 ;;
 ;; Error pages
 

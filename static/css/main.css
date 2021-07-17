@@ -16,6 +16,29 @@ a:hover {
   text-decoration: underline;
 }
 
+nav ul {
+    display: flex;
+}
+
+nav ul li {
+    margin: 0.5em;
+    list-style: none;
+}
 #main {
-  text-align: center;
+    padding:1em;
+}
+
+table, td, th {
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 0.5em;
+}
+
+.brand {
+    font-weight: bolder;
+    font-size: 1em;
+    color: rebeccapurple;
 }

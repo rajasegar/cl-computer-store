@@ -1,0 +1,28 @@
+{% extends "layouts/default.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div id="main">
+  <h1>Products</h1>
+<table>
+    <thead>
+      <tr>
+	<th>Code</th>
+	<th>Name</th>
+	<th>Price</th>
+	<th>Manufacturer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+	<td>{{product.code}}</td>
+	<td>{{product.name}}</td>
+	<td>{{product.price}}</td>
+	<td><a href="/manufacturers/{{product.manufacturer}}">{{product.manufacturer}}</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}

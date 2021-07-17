@@ -1,0 +1,23 @@
+{% extends "layouts/default.html" %}
+{% block title %}Manufacturers - The Computer Store{% endblock %}
+{% block content %}
+<div id="main">
+  <h1>Manufacturers</h1>
+  <table>
+    <thead>
+      <tr>
+	<th>Code</th>
+	<th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for man in manfs %}
+      <tr>
+	<td>{{man.code}}</td>
+	<td>{{man.name}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
